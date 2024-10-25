@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Таблица SEO запросов</title>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    
+    <link rel="stylesheet" href="styles/styles.css">
+    <link rel="stylesheet" href="styles/table-controls.css">
+    <link rel="stylesheet" href="styles/content-table.css">
+    <link rel="stylesheet" href="styles/date-range-picker.css">
+    <link rel="stylesheet" href="styles/seo-table-pagination.css">
+</head>
+<body>
+    <div class="seo-table">
+        <div class="seo-table__controls">
+            <div class="seo-table__filters">
+                <div class="seo-table__filters-search">
+                    <input type="text" class="seo-table__filters-search-input" placeholder="Начните вводить слово" />
+                </div>
+                <div class="seo-table__filters-date">
+                    <input type="text" class="seo-table__filters-date-input" name="daterange" id="daterange" />
+                </div>                       
+                <div class="seo-table__load">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M18 18.15H18.15V18V15.15H19.85V18C19.85 19.0172 19.0172 19.85 18 19.85H6C4.98284 19.85 4.15 19.0172 4.15 18V15.15H5.85V18V18.15H6H18ZM12.85 7.83V15.85H11.15V7.83V7.46886L10.8941 7.72373L8.4102 10.1981L7.21213 9L12 4.21213L16.7879 9L15.5898 10.1981L13.1059 7.72373L12.85 7.46886V7.83Z" fill="#0076F5" stroke="white" stroke-width="0.3"/>
+                    </svg>
+
+                    <div class="seo-table__load-dropdown">
+                        <ul class="seo-table__load-options">
+                            <li class="seo-table__load-option">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M13.1429 16.7692V18H2V2H9.42857M9.42857 2V5.69231H13.1429M9.42857 2H10.0476L13.1429 5.07692V5.69231M13.1429 5.69231V7.53846" stroke="#404040" stroke-width="1.2" stroke-linejoin="round"/>
+                                    <path d="M14.9997 9.38464L13.1425 11.8462M11.2854 14.3077L13.1425 11.8462M13.1425 11.8462L11.2854 9.38464M13.1425 11.8462L14.9997 14.3077" stroke="#404040" stroke-width="1.2" stroke-linecap="square"/>
+                                </svg>XLSX
+                            </li>
+                            <li class="seo-table__load-option">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M8.2 9.38462H5.72C5.55557 9.38462 5.39787 9.44945 5.28159 9.56486C5.16532 9.68026 5.1 9.83679 5.1 10V13.6923C5.1 13.8555 5.16532 14.012 5.28159 14.1275C5.39787 14.2429 5.55557 14.3077 5.72 14.3077H8.2M12.54 9.38462H10.06C9.89557 9.38462 9.73787 9.44945 9.62159 9.56486C9.50532 9.68026 9.44 9.83679 9.44 10V11.2308C9.44 11.394 9.50532 11.5505 9.62159 11.6659C9.73787 11.7813 9.89557 11.8462 10.06 11.8462H11.3C11.4644 11.8462 11.6221 11.911 11.7384 12.0264C11.8547 12.1418 11.92 12.2983 11.92 12.4615V13.6923C11.92 13.8555 11.8547 14.012 11.7384 14.1275C11.6221 14.2429 11.4644 14.3077 11.3 14.3077H8.82M13.78 8.76923C13.78 9.38462 15.02 14.3077 15.02 14.3077H16.26C16.26 14.3077 17.5 9.38462 17.5 8.76923M13.16 16.7692V18H2V2H9.44M9.44 2V5.69231H13.16M9.44 2H10.06L13.16 5.07692V5.69231M13.16 5.69231V7.53846" stroke="#404040" stroke-width="1.2" stroke-linejoin="round"/>
+                                </svg> CSV
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="seo-table__settings">
+                <div class="seo-table__settings-reset">
+                    <button id="reset-sort" class="seo-table__reset-btn">Сбросить сортировку</button>
+                </div>                
+                <button class="seo-table__settings-button">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <mask id="mask0_2001_198" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="20" height="20">
+                        <rect width="20" height="20" fill="#D9D9D9"/>
+                        </mask>
+                        <g mask="url(#mask0_2001_198)">
+                        <path d="M3.65278 6.44444V6.56944H3.77778H16.2222H16.3472V6.44444V3.77778V3.65278H16.2222H3.77778H3.65278V3.77778V6.44444ZM6.125 8.22222V8.09722H6H3.77778H3.65278V8.22222V16.2222V16.3472H3.77778H6H6.125V16.2222V8.22222ZM14 8.09722H13.875V8.22222V16.2222V16.3472H14H16.2222H16.3472V16.2222V8.22222V8.09722H16.2222H14ZM12.3472 8.22222V8.09722H12.2222H7.77778H7.65278V8.22222V16.2222V16.3472H7.77778H12.2222H12.3472V16.2222V8.22222ZM16.2222 17.875H3.77778C3.3223 17.875 2.9355 17.7143 2.61061 17.3894C2.28572 17.0645 2.125 16.6777 2.125 16.2222V3.77778C2.125 3.3223 2.28572 2.9355 2.61061 2.61061C2.9355 2.28572 3.3223 2.125 3.77778 2.125H16.2222C16.6777 2.125 17.0645 2.28572 17.3894 2.61061C17.7143 2.9355 17.875 3.3223 17.875 3.77778V16.2222C17.875 16.6777 17.7143 17.0645 17.3894 17.3894C17.0645 17.7143 16.6777 17.875 16.2222 17.875Z" fill="#404040" stroke="white" stroke-width="0.25"/>
+                        </g>
+                    </svg>
+                    <span>Настройки</span>
+                </button>
+                <div class="seo-table__settings-menu">
+                    <div class="seo-table__settings-menu-top">
+                        <label class="seo-table__settings-menu__label">
+                            <input type="checkbox"> Скрыть дни без данных
+                        </label>
+                        <div class="switch-container">
+                            <label class="switch">
+                              <input type="checkbox">
+                              <span class="slider"></span>
+                            </label>
+                            <span class="label-text">Сокращенный вид</span>
+                        </div>
+                        <div class="switch-container">
+                            <label class="switch">
+                              <input type="checkbox" checked>
+                              <span class="slider"></span>
+                            </label>
+                            <span class="label-text">Вычислить суммы</span>
+                        </div>
+                        <label class="seo-table__settings-menu__label seo-table__settings-menu__label--inactive">
+                            <input type="checkbox" disabled> Показать график
+                        </label>
+                        <button class="seo-table__apply-btn">Применить</button>
+                    </div>
+                    <hr class="seo-table__settings-menu__divider">
+                    <div class="seo-table__settings-menu-bottom">
+                        <label class="seo-table__settings-menu-bottom-label">
+                            Очистить данные за
+                            <input type="number" class="seo-table__settings-menu-bottom-input" value="0"> дней
+                        </label>
+                        <button class="seo-table__delete-btn">Удалить</button>   
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="seo-table__wrapper">
+            <table class="seo-table__content">
+                <thead class="seo-table__head">
+                    <tr class="seo-table__row">
+                        <th class="seo-table__head-cell"><input type="checkbox"></th>
+                        <th class="seo-table__head-cell seo-table__head-cell--sortable">Ключевые слова<img src="icons/table_arrow.svg" alt="Фильтр" class="seo-table__arrow-icon"></th>
+                        <th class="seo-table__head-cell seo-table__head-cell--sortable">Позиция<img src="icons/table_arrow.svg" alt="Фильтр" class="seo-table__arrow-icon"></th>
+                        <th class="seo-table__head-cell seo-table__head-cell--sortable">Клики<img src="icons/table_arrow.svg" alt="Фильтр" class="seo-table__arrow-icon"></th>
+                        <th class="seo-table__head-cell seo-table__head-cell--sortable">CTR<img src="icons/table_arrow.svg" alt="Фильтр" class="seo-table__arrow-icon"></th>
+                        <th class="seo-table__head-cell seo-table__head-cell--sortable">Показы<img src="icons/table_arrow.svg" alt="Фильтр" class="seo-table__arrow-icon"></th>
+                        <th class="seo-table__head-cell seo-table__head-cell--sortable">Спрос<img src="icons/table_arrow.svg" alt="Фильтр" class="seo-table__arrow-icon"></th>
+                        <th class="seo-table__head-cell seo-table__head-cell--sortable">01.10.2024 (пн)</th>
+                        <th class="seo-table__head-cell seo-table__head-cell--sortable">02.10.2024 (вт)</th>
+                        <th class="seo-table__head-cell seo-table__head-cell--sortable">03.10.2024 (ср)</th>
+                    </tr>
+                    <div id="common-dropdown" class="dropdown">
+                        <ul>
+                          <li>Позиция</li>
+                          <li>Спрос</li>
+                          <li>Клики</li>
+                          <li>Показы</li>
+                          <li>CTR</li>
+                        </ul>
+                      </div>
+                </thead>
+                <tbody class="seo-table__body">
+                    <tr class="seo-table__row">
+                        <td class="seo-table__cell"><input type="checkbox"></td>
+                        <td class="seo-table__cell">кресло</td>
+                        <td class="seo-table__cell">15.5</td>
+                        <td class="seo-table__cell">14500</td>
+                        <td class="seo-table__cell">20.01%</td>
+                        <td class="seo-table__cell">14500</td>
+                        <td class="seo-table__cell">14500</td>
+                        <td class="seo-table__cell seo-table__cell--empty">Нет данных</td>
+                        <td class="seo-table__cell">
+                            <div class="seo-table__cell-content">
+                                <div class="seo-table__cell-value">
+                                    <span class="seo-table__cell-value-main">
+                                        16.3
+                                    </span>
+                                     <span class="seo-table__cell-value-up">11</span>
+                                </div>
+                                <div class="seo-table__cell-info">
+                                    <span class="seo-table__cell-info-label">Клики</span><span class="seo-table__cell-info-value">7128</span>
+                                    <span class="seo-table__cell-info-label">CTR</span><span class="seo-table__cell-info-value">20.01%</span>
+                                    <span class="seo-table__cell-info-label">Показы</span><span class="seo-table__cell-info-value">1145</span>
+                                    <span class="seo-table__cell-info-label">Спрос</span><span class="seo-table__cell-info-value">8713</span>
+                                </div>                                
+                            </div>   
+                        </td>
+                        <td class="seo-table__cell">
+                            <div class="seo-table__cell-content">
+                                <div class="seo-table__cell-value">
+                                    <span class="seo-table__cell-value-main">
+                                        46.9
+                                    </span>
+                                     <span class="seo-table__cell-value-up">9</span>
+                                </div>
+                                <div class="seo-table__cell-info">
+                                    <span class="seo-table__cell-info-label">Клики</span><span class="seo-table__cell-info-value">7128</span>
+                                    <span class="seo-table__cell-info-label">CTR</span><span class="seo-table__cell-info-value">20.01%</span>
+                                    <span class="seo-table__cell-info-label">Показы</span><span class="seo-table__cell-info-value">1145</span>
+                                    <span class="seo-table__cell-info-label">Спрос</span><span class="seo-table__cell-info-value">8713</span>
+                                </div>    
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="seo-table__row">
+                        <td class="seo-table__cell"><input type="checkbox"></td>
+                        <td class="seo-table__cell">кресло компьютерное</td>
+                        <td class="seo-table__cell">25.5</td>
+                        <td class="seo-table__cell">14500</td>
+                        <td class="seo-table__cell">20.01%</td>
+                        <td class="seo-table__cell">14500</td>
+                        <td class="seo-table__cell">14500</td>
+                        <td class="seo-table__cell seo-table__cell--empty">Нет данных</td>
+                        <td class="seo-table__cell">
+                            <div class="seo-table__cell-content">
+                                <div class="seo-table__cell-value">
+                                    <span class="seo-table__cell-value-main">
+                                       46.9
+                                    </span>
+                                     <span class="seo-table__cell-value-up">9</span>
+                                </div>
+                                <div class="seo-table__cell-info">
+                                    <span class="seo-table__cell-info-label">Клики</span><span class="seo-table__cell-info-value">7128</span>
+                                    <span class="seo-table__cell-info-label">CTR</span><span class="seo-table__cell-info-value">20.01%</span>
+                                    <span class="seo-table__cell-info-label">Показы</span><span class="seo-table__cell-info-value">1145</span>
+                                    <span class="seo-table__cell-info-label">Спрос</span><span class="seo-table__cell-info-value">8713</span>
+                                </div>    
+                            </div>
+                        </td>
+                        <td class="seo-table__cell seo-table__cell--empty">Нет данных</td>
+                    </tr>
+                    <tr class="seo-table__row">
+                        <td class="seo-table__cell"><input type="checkbox"></td>
+                        <td class="seo-table__cell">кресло кожаное</td>
+                        <td class="seo-table__cell">35.5</td>
+                        <td class="seo-table__cell">14500</td>
+                        <td class="seo-table__cell">20.01%</td>
+                        <td class="seo-table__cell">14500</td>
+                        <td class="seo-table__cell">14500</td>
+                        <td class="seo-table__cell seo-table__cell--empty">Нет данных</td>
+                        <td class="seo-table__cell">
+                            <div class="seo-table__cell-content">
+                                <div class="seo-table__cell-value">
+                                    <span class="seo-table__cell-value-main">
+                                        8
+                                    </span>
+                                     <span class="seo-table__cell-value-up">1</span>
+                                </div>
+                                <div class="seo-table__cell-info">
+                                    <span class="seo-table__cell-info-label">Клики</span><span class="seo-table__cell-info-value">7128</span>
+                                    <span class="seo-table__cell-info-label">CTR</span><span class="seo-table__cell-info-value">20.01%</span>
+                                    <span class="seo-table__cell-info-label">Показы</span><span class="seo-table__cell-info-value">1145</span>
+                                    <span class="seo-table__cell-info-label">Спрос</span><span class="seo-table__cell-info-value">8713</span>
+                                </div>    
+                            </div>    
+                        </td>
+                        <td class="seo-table__cell">
+                            <div class="seo-table__cell-content">
+                                <div class="seo-table__cell-value">
+                                    <span class="seo-table__cell-value-main">
+                                        46.9
+                                    </span>
+                                     <span class="seo-table__cell-value-up">9</span>
+                                </div>
+                                <div class="seo-table__cell-info">
+                                    <span class="seo-table__cell-info-label">Клики</span><span class="seo-table__cell-info-value">7128</span>
+                                    <span class="seo-table__cell-info-label">CTR</span><span class="seo-table__cell-info-value">20.01%</span>
+                                    <span class="seo-table__cell-info-label">Показы</span><span class="seo-table__cell-info-value">1145</span>
+                                    <span class="seo-table__cell-info-label">Спрос</span><span class="seo-table__cell-info-value">8713</span>
+                                </div>    
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="seo-table__footer">
+            <div class="seo-table__delete-wrap">
+                <button class="seo-table__delete-btn seo-table__delete-btn--icon">
+                    <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <mask id="mask0_2053_1843" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="25">
+                        <rect y="0.5" width="24" height="24" fill="#D9D9D9"/>
+                        </mask>
+                        <g mask="url(#mask0_2053_1843)">
+                        <path d="M5.975 7.16667V7.06667H5.875H5.1V5.48889H9.375H9.475V5.38889V4.6H14.525V5.38889V5.48889H14.625H18.9V7.06667H18.125H18.025V7.16667V18.7222C18.025 19.1849 17.864 19.5782 17.5397 19.9076C17.2154 20.237 16.829 20.4 16.375 20.4H7.625C7.171 20.4 6.78456 20.237 6.46033 19.9076C6.13605 19.5782 5.975 19.1849 5.975 18.7222V7.16667ZM16.475 7.16667V7.06667H16.375H7.625H7.525V7.16667V18.7222V18.8222H7.625H16.375H16.475V18.7222V7.16667ZM11.025 9.04444V16.8444H9.475V9.04444H11.025ZM14.525 9.04444V16.8444H12.975V9.04444H14.525Z" fill="#E50C00" stroke="#FDF4F4" stroke-width="0.2"/>
+                        </g>
+                        </svg>Удалить
+                </button>
+                <span class="seo-table__selected-count"></span>
+            </div>
+            <div class="seo-table__pagination">
+                <div class="seo-table__pagination-prev">
+                    <svg width="32" height="33" viewBox="0 0 32 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M0 4.5C0 2.29086 1.79086 0.5 4 0.5H28C30.2091 0.5 32 2.29086 32 4.5V28.5C32 30.7091 30.2091 32.5 28 32.5H4C1.79086 32.5 0 30.7091 0 28.5V4.5Z" fill="white"/>
+                        <mask id="mask0_2053_945" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="4" y="4" width="20" height="21">
+                        <rect x="4" y="4.5" width="20" height="20" fill="#D9D9D9"/>
+                        </mask>
+                        <g mask="url(#mask0_2053_945)">
+                        <path d="M20.287 9.92L13.7585 16.3935L13.6511 16.5L13.7585 16.6065L20.287 23.08L19.0679 24.2888L11.213 16.5L19.0679 8.71124L20.287 9.92Z" fill="#747474" stroke="white" stroke-width="0.3"/>
+                        </g>
+                        </svg>
+                        
+                </div>
+                <span class="seo-table__pagination-info">Страница 
+                    <input type="number" class="seo-table__pagination-input" value="2" min="1" max="5"> из 5
+                </span>
+                <div class="seo-table__pagination-next">
+                    <svg width="32" height="33" viewBox="0 0 32 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M0 4.5C0 2.29086 1.79086 0.5 4 0.5H28C30.2091 0.5 32 2.29086 32 4.5V28.5C32 30.7091 30.2091 32.5 28 32.5H4C1.79086 32.5 0 30.7091 0 28.5V4.5Z" fill="white"/>
+                        <mask id="mask0_2053_954" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="4" y="4" width="20" height="21">
+                        <rect x="4" y="4.5" width="20" height="20" fill="#D9D9D9"/>
+                        </mask>
+                        <g mask="url(#mask0_2053_954)">
+                        <path d="M11.213 9.92L17.7415 16.3935L17.8489 16.5L17.7415 16.6065L11.213 23.08L12.4321 24.2888L20.287 16.5L12.4321 8.71124L11.213 9.92Z" fill="#747474" stroke="white" stroke-width="0.3"/>
+                        </g>
+                        </svg>
+                </div>
+            </div>
+            <select class="seo-table__pagination-select">
+                <option value="50">50</option>
+                <option value="100" selected>100</option>
+                <option value="500">500</option>
+                <option value="1000">1000</option>
+            </select>
+        </div>
+        
+    </div>
+
+    <script>
+        const positionElements = document.querySelectorAll('.seo-table__cell-value-main');
+
+        function updateTrendArrow(valueUpElement, arrow, upValue) {
+            if (valueUpElement) {
+                valueUpElement.textContent = `${arrow} ${upValue}`;
+            }
+        }
+        function applyClassAndUpdateArrow(tableCell, className, arrow) {
+            tableCell.classList.add(className);
+            const valueUpElement = tableCell.querySelector('.seo-table__cell-value-up');
+            if (valueUpElement) {
+                const upValue = parseFloat(valueUpElement.textContent.trim());
+                updateTrendArrow(valueUpElement, arrow, upValue);
+            }
+        }
+
+        positionElements.forEach(function (element) {
+            const mainValue = parseFloat(element.textContent.trim());
+            const tableCell = element.closest('.seo-table__cell');
+
+            if (mainValue > 1 && mainValue < 10) {
+                applyClassAndUpdateArrow(tableCell, 'seo-table__cell--neutral', '▴');
+            } else if (mainValue > 11 && mainValue < 30) {
+                applyClassAndUpdateArrow(tableCell, 'seo-table__cell--positive', '▴');
+            } else if (mainValue > 31 && mainValue < 50) {
+                applyClassAndUpdateArrow(tableCell, 'seo-table__cell--negative', '▾');
+            }
+        });
+
+    </script>
+    <script type="text/javascript" src="js/user-event-handler.js"></script>
+    <script type="text/javascript" src="js/table-selection.js"></script>
+    <script type="text/javascript" src="js/table-filters.js"></script>
+    <script type="text/javascript" src="js/date-range-picker.js"></script>
+</body>
+</html>

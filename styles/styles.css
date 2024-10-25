@@ -1,0 +1,97 @@
+@font-face {
+    font-family: 'PT Root UI';
+    src: url('../fonts/PT-Root-UI_Regular.woff2') format('woff2'),
+         url('../fonts/PT-Root-UI_Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'PT Root UI Medium';
+    src: url('../fonts/PT-Root-UI_Medium.woff2') format('woff2'),
+         url('../fonts/PT-Root-UI_Medium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+}
+
+html {
+    font-size: 16px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    font-size: 0.875rem;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'PT Root UI', sans-serif;
+    color: #404040;
+    background-color: #f8f8f8;
+}
+
+input {
+    font-family: 'PT Root UI', sans-serif;
+    color: #404040;
+    cursor: pointer;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+input[type=number],
+input[type="number"]:hover,
+input[type="number"]:focus {
+    -webkit-appearance: none; 
+    -moz-appearance: textfield;
+    appearance: none;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.seo-table {
+    background-color: #f8f8f8;
+    padding-top: 1.75rem;
+    padding-left: 1.5625rem;
+    max-width: 70.2rem;
+    margin-bottom: 2rem;
+}
+
+.seo-table__delete-btn {
+    display: block;
+    width: 100%;
+    background-color: #FDF4F4;
+    color: #E50C00;
+    border: none;
+    padding: 0.5rem;
+    cursor: pointer;
+    border-radius: 0.25rem;
+}
+
+.seo-table__delete-btn:hover {
+    background-color: #FFE7E6;
+}
+
+.seo-table__apply-btn {
+    display: block;
+    width: 100%;
+    background-color: #F2F8FE;
+    color: #0076F5;
+    border: none;
+    padding: 0.5rem;
+    margin-top: 0.5rem;
+    cursor: pointer;
+    border-radius: 0.25rem;
+}
+
+.seo-table__apply-btn:hover {
+    background-color: #DFEFFF;
+}
